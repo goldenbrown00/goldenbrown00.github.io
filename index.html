@@ -4,387 +4,464 @@
   <meta charset="UTF-8"/>
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>a Letter For You</title>
-  <link href="https://fonts.googleapis.com/css2?family=Caveat:wght@400;600;700&family=Nunito:wght@600;700;800&display=swap" rel="stylesheet"/>
+  <link href="https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400;0,600;1,400;1,600&family=Caveat:wght@500;700&family=Nunito:wght@700;800&display=swap" rel="stylesheet"/>
   <style>
+    :root {
+      --cream:  #fdf6e3;
+      --paper:  #fff9ef;
+      --ink:    #2c1810;
+      --faded:  #8b6f5e;
+      --rose:   #c9405a;
+      --gold:   #c8963e;
+      --warm:   #e8c99a;
+      --shadow: rgba(44,24,16,0.18);
+    }
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
     body {
-      font-family: 'Nunito', sans-serif;
+      font-family: 'Lora', serif;
       min-height: 100vh;
-      background: #1a0a2e;
+      background: radial-gradient(ellipse at 60% 40%, #2d1b0e 0%, #1a0a05 50%, #0d0505 100%);
       display: flex; align-items: center; justify-content: center;
-      overflow: hidden;
-      position: relative;
-      user-select: none;
-      -webkit-user-select: none;
+      overflow: hidden; position: relative;
+      user-select: none; -webkit-user-select: none;
     }
 
-    .stars { position: fixed; inset: 0; pointer-events: none; z-index: 0; }
-    .star {
-      position: absolute; border-radius: 50%;
-      background: white; animation: twinkle linear infinite;
+    /* ── warm candlelight glow ── */
+    body::before {
+      content: '';
+      position: fixed; inset: 0; pointer-events: none;
+      background: radial-gradient(ellipse 60% 50% at 50% 60%, rgba(200,150,62,0.12) 0%, transparent 70%);
+      animation: candleFlicker 4s ease-in-out infinite;
     }
-    @keyframes twinkle {
-      0%,100%{ opacity: 0.1; transform: scale(1); }
-      50%    { opacity: 0.9; transform: scale(1.4); }
-    }
-
-    .heart-float {
-      position: fixed; pointer-events: none; z-index: 0;
-      font-size: 18px; animation: floatHeart linear infinite; opacity: 0;
-    }
-    @keyframes floatHeart {
-      0%  { transform: translateY(110vh); opacity: 0; }
-      10% { opacity: 0.6; }
-      90% { opacity: 0.4; }
-      100%{ transform: translateY(-10vh); opacity: 0; }
+    @keyframes candleFlicker {
+      0%,100%{ opacity: 0.8; transform: scale(1); }
+      25%    { opacity: 1;   transform: scale(1.02); }
+      50%    { opacity: 0.7; transform: scale(0.99); }
+      75%    { opacity: 0.95; transform: scale(1.01); }
     }
 
-       .stage {
+    /* ── floating petals ── */
+    .petal {
+      position: fixed; pointer-events: none; z-index: 1;
+      font-size: clamp(12px, 2vw, 18px);
+      animation: petalDrift linear infinite; opacity: 0;
+    }
+    @keyframes petalDrift {
+      0%   { transform: translateY(110vh) rotate(0deg); opacity: 0; }
+      8%   { opacity: 0.5; }
+      92%  { opacity: 0.3; }
+      100% { transform: translateY(-10vh) rotate(540deg); opacity: 0; }
+    }
+
+    /* ── ENVELOPE SCREEN ── */
+    .envelope-screen {
+      position: fixed; inset: 0; z-index: 200;
+      display: flex; flex-direction: column; align-items: center; justify-content: center;
+      gap: 20px; cursor: pointer;
+      transition: opacity 0.8s ease, transform 0.8s ease;
+    }
+    .envelope-screen.hide { opacity: 0; transform: scale(1.1) translateY(-20px); pointer-events: none; }
+
+    .env-glow {
+      position: absolute; inset: 0; pointer-events: none;
+      background: radial-gradient(ellipse 50% 40% at 50% 55%, rgba(200,150,62,0.2) 0%, transparent 70%);
+    }
+    .env-stamp {
+      width: 110px; height: 110px;
+      background: linear-gradient(145deg, #c9405a, #8b1a2e);
+      border-radius: 50%;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 52px;
+      box-shadow: 0 0 0 6px rgba(201,64,90,0.15), 0 0 40px rgba(201,64,90,0.3), 0 12px 40px rgba(0,0,0,0.5);
+      animation: stampPulse 2s ease-in-out infinite;
+      position: relative; z-index: 1;
+    }
+    @keyframes stampPulse {
+      0%,100%{ transform: scale(1); box-shadow: 0 0 0 6px rgba(201,64,90,0.15), 0 0 40px rgba(201,64,90,0.3), 0 12px 40px rgba(0,0,0,0.5); }
+      50%    { transform: scale(1.05); box-shadow: 0 0 0 12px rgba(201,64,90,0.1), 0 0 60px rgba(201,64,90,0.4), 0 12px 40px rgba(0,0,0,0.5); }
+    }
+    .env-title {
+      font-family: 'Caveat', cursive; font-size: clamp(26px, 6vw, 36px);
+      color: var(--warm); font-weight: 700; letter-spacing: 1px;
+      text-shadow: 0 2px 20px rgba(200,150,62,0.4);
+      position: relative; z-index: 1;
+    }
+    .env-subtitle {
+      font-family: 'Lora', serif; font-style: italic;
+      font-size: 14px; color: rgba(232,201,154,0.5);
+      position: relative; z-index: 1;
+      animation: blink 2s ease-in-out infinite;
+    }
+    @keyframes blink { 0%,100%{opacity:0.4;} 50%{opacity:1;} }
+
+    /* ── STAGE ── */
+    .stage {
       position: relative; z-index: 10;
-      display: flex; flex-direction: column; align-items: center; gap: 24px;
-      width: 100%;
-      min-height: 100vh;
-      justify-content: center;
-      padding: 20px 0;
+      display: flex; flex-direction: column; align-items: center; gap: 20px;
     }
 
-    .page-dots { display: flex; gap: 8px; }
+    /* ── PROGRESS ── */
+    .progress-wrap {
+      display: flex; align-items: center; gap: 10px;
+    }
+    .prog-line {
+      display: flex; gap: 6px; align-items: center;
+    }
     .dot {
-      width: 8px; height: 8px; border-radius: 50%;
-      background: rgba(255,255,255,0.25);
-      transition: all 0.4s;
+      width: 7px; height: 7px; border-radius: 50%;
+      background: rgba(232,201,154,0.2);
+      transition: all 0.5s cubic-bezier(0.34,1.56,0.64,1);
     }
-    .dot.active { background: #ff6b9d; transform: scale(1.4); }
-    .dot.done   { background: rgba(255,107,157,0.45); }
+    .dot.active { background: var(--rose); transform: scale(1.6); box-shadow: 0 0 8px var(--rose); }
+    .dot.done   { background: rgba(201,64,90,0.4); }
+    .prog-text {
+      font-family: 'Caveat', cursive; font-size: 13px;
+      color: rgba(232,201,154,0.4); letter-spacing: 1px;
+    }
 
+    /* ── LETTER WRAP ── */
     .letter-wrap {
-      width: min(340px, 90vw);
-      height: min(460px, 80vh);
-      perspective: 1200px;
+      width: min(360px, 92vw);
+      height: min(480px, 78vh);
+      perspective: 1400px;
       position: relative;
+      filter: drop-shadow(0 20px 60px rgba(0,0,0,0.6)) drop-shadow(0 4px 20px rgba(201,64,90,0.15));
     }
 
+    /* ── PAGE ── */
     .page {
       position: absolute; inset: 0;
-      border-radius: 18px;
-      padding: 36px 30px 28px;
+      border-radius: 3px 16px 16px 3px;
       display: flex; flex-direction: column;
       opacity: 0; pointer-events: none;
-      transform: rotateY(-90deg) scale(0.9);
+      transform: rotateY(-90deg) scale(0.92);
       transform-origin: left center;
-      transition: transform 0.55s cubic-bezier(0.4,0,0.2,1), opacity 0.35s ease;
+      transition: transform 0.6s cubic-bezier(0.4,0,0.2,1), opacity 0.4s ease;
       will-change: transform, opacity;
       overflow: hidden;
     }
     .page.active {
       opacity: 1; pointer-events: all;
       transform: rotateY(0deg) scale(1);
-      animation: bouncePage 0.55s cubic-bezier(0.36, 0.07, 0.19, 0.97) both;
+      animation: pageArrive 0.6s cubic-bezier(0.34,1.56,0.64,1) both;
     }
-    @keyframes bouncePage {
-      0%  { transform: scale(0.6) rotate(-4deg); opacity: 0; }
-      50% { transform: scale(1.07) rotate(2deg); opacity: 1; }
-      75% { transform: scale(0.96) rotate(-1deg); }
+    @keyframes pageArrive {
+      0%  { transform: scale(0.85) rotate(-3deg) translateX(-20px); opacity: 0; }
+      60% { transform: scale(1.02) rotate(0.5deg); opacity: 1; }
       100%{ transform: scale(1) rotate(0deg); opacity: 1; }
     }
     .page.exit {
       opacity: 0; pointer-events: none;
-      transform: rotateY(90deg) scale(0.9);
+      transform: rotateY(90deg) scale(0.88) translateX(20px);
       transform-origin: right center;
-      transition: transform 0.45s cubic-bezier(0.4,0,0.2,1), opacity 0.3s ease;
+      transition: transform 0.4s ease-in, opacity 0.3s ease;
     }
 
-    .page-1 { background: linear-gradient(145deg, #fff8e7, #ffecd2); }
-    .page-2 { background: linear-gradient(145deg, #fce4ec, #f8bbd9); }
-    .page-3 { background: linear-gradient(145deg, #ede7f6, #d1c4e9); }
-    .page-4 { background: linear-gradient(145deg, #e8f5e9, #c8e6c9); }
-    .page-5 { background: linear-gradient(145deg, #fff9c4, #fff176); }
-    .page-6 { background: linear-gradient(145deg, #fce4ec, #ffccbc); }
+    /* page backgrounds — all warm paper tones */
+    .page-1 { background: linear-gradient(160deg, #fdf6e3 0%, #f9edd0 100%); }
+    .page-2 { background: linear-gradient(160deg, #fef0f0 0%, #fdddd8 100%); }
+    .page-3 { background: linear-gradient(160deg, #f5f0fe 0%, #ead8f5 100%); }
+    .page-4 { background: linear-gradient(160deg, #f0faf0 0%, #d8f0dc 100%); }
+    .page-5 { background: linear-gradient(160deg, #fff8e8 0%, #fdefc8 100%); }
+    .page-6 { background: linear-gradient(160deg, #fff5f5 0%, #ffd8d8 100%); }
 
+    /* paper texture grain */
     .page::after {
       content: '';
-      position: absolute; inset: 0;
-      background: repeating-linear-gradient(
-        transparent, transparent 37px, rgba(0,0,0,0.06) 37px, rgba(0,0,0,0.06) 38px
-      );
-      border-radius: 18px 4px 4px 18px;
-      pointer-events: none;
+      position: absolute; inset: 0; pointer-events: none; border-radius: inherit;
+      background-image:
+        repeating-linear-gradient(transparent, transparent 31px, rgba(44,24,16,0.055) 31px, rgba(44,24,16,0.055) 32px);
+      background-size: 100% 32px;
     }
+
+    /* left binding strip */
     .page::before {
       content: '';
-      position: absolute; top: 0; bottom: 0; left: 60px;
-      width: 2px; background: rgba(255,100,100,0.2);
-      z-index: 1; pointer-events: none;
+      position: absolute; top: 0; bottom: 0; left: 0; width: 32px;
+      background: linear-gradient(90deg, rgba(44,24,16,0.08) 0%, rgba(44,24,16,0.03) 60%, transparent 100%);
+      border-radius: 3px 0 0 3px;
+      border-right: 1.5px solid rgba(44,24,16,0.1);
+      pointer-events: none; z-index: 2;
     }
 
+    /* binding dots */
     .holes {
       position: absolute; left: 0; top: 0; bottom: 0;
-      width: 46px;
+      width: 32px; z-index: 3; pointer-events: none;
       display: flex; flex-direction: column;
       justify-content: space-evenly; align-items: center;
-      z-index: 2; padding: 20px 0;
+      padding: 24px 0;
     }
     .hole {
-      width: 14px; height: 14px; border-radius: 50%;
-      background: #1a0a2e;
-      box-shadow: inset 0 2px 4px rgba(0,0,0,0.5);
+      width: 10px; height: 10px; border-radius: 50%;
+      background: radial-gradient(circle, #c8963e 30%, #8b5e1a 100%);
+      box-shadow: 0 1px 3px rgba(0,0,0,0.4), inset 0 1px 2px rgba(255,255,255,0.3);
     }
 
+    /* ── PAGE CONTENT ── */
     .page-content {
-      position: relative; z-index: 3;
+      position: relative; z-index: 4;
       flex: 1; display: flex; flex-direction: column;
-      padding-left: 18px;
+      padding: 28px 24px 20px 44px;
+    }
+
+    .page-label {
+      font-family: 'Lora', serif; font-style: italic;
+      font-size: 10px; color: var(--faded);
+      letter-spacing: 2px; text-transform: uppercase;
+      margin-bottom: 16px; opacity: 0.6;
     }
 
     .page-body {
       flex: 1;
       font-family: 'Caveat', cursive;
-      font-size: 20px;
-      line-height: 1.85;
-      color: #3a2a4a;
+      font-size: clamp(18px, 4.2vw, 22px);
+      line-height: 2;
+      color: var(--ink);
     }
-    .page-body .big   { font-size: clamp(26px,7vw,34px); font-weight: 700; display: block; margin-bottom: 12px; }
-    .page-body .pink  { color: #e91e8c; font-weight: 700; }
-    .page-body .pur   { color: #7b2ff7; font-weight: 700; }
-    .page-body .grn   { color: #2e7d32; font-weight: 700; }
-    .page-body .accent{ font-size: 1.15em; }
+    .page-body .big {
+      font-family: 'Lora', serif; font-style: italic; font-weight: 600;
+      font-size: clamp(24px,6vw,32px); display: block;
+      color: var(--ink); margin-bottom: 14px; line-height: 1.3;
+    }
+    .page-body .rose   { color: var(--rose); font-weight: 700; }
+    .page-body .gold   { color: var(--gold); font-weight: 700; }
+    .page-body .pur    { color: #7b4fbf; font-weight: 700; }
+    .page-body .grn    { color: #2d6a4f; font-weight: 700; }
+    .page-body .accent { font-style: italic; }
 
     .doodle {
-      font-size: 32px; text-align: right;
-      margin-top: auto; padding-top: 12px;
-      animation: doodleBob 2s ease-in-out infinite;
+      font-size: 28px; text-align: right;
+      margin-top: auto; padding-top: 8px;
+      animation: doodleBob 3s ease-in-out infinite;
+      opacity: 0.85;
     }
     @keyframes doodleBob {
-      0%,100%{ transform: rotate(-6deg) scale(1); }
-      50%    { transform: rotate(6deg) scale(1.1); }
+      0%,100%{ transform: rotate(-5deg) scale(1); }
+      50%    { transform: rotate(5deg) scale(1.08); }
     }
 
+    /* centered layout for short pages */
+    .center-body {
+      display: flex; flex-direction: column;
+      align-items: center; justify-content: center;
+      text-align: center;
+    }
+
+    /* ── CORNER DOODLES ── */
+    .doodle-corner {
+      position: absolute; font-size: 18px;
+      pointer-events: none; z-index: 5; opacity: 0.7;
+      animation: cornerSpin 5s ease-in-out infinite;
+    }
+    @keyframes cornerSpin {
+      0%,100%{ transform: rotate(-12deg) scale(1); }
+      50%    { transform: rotate(12deg) scale(1.1); }
+    }
+    .dc-tl { top: 8px;   left: 36px; animation-delay: 0s; }
+    .dc-tr { top: 8px;   right: 10px; animation-delay: 0.6s; }
+    .dc-bl { bottom: 8px; left: 36px; animation-delay: 1.2s; }
+    .dc-br { bottom: 8px; right: 10px; animation-delay: 0.3s; }
+
+    /* page fold corner */
+    .fold {
+      position: absolute; bottom: 0; right: 0; z-index: 6;
+      width: 0; height: 0; border-style: solid;
+      border-width: 0 0 24px 24px;
+      border-color: transparent transparent rgba(44,24,16,0.12) transparent;
+    }
+
+    /* ── NEXT BUTTON ── */
     .btn-wrap {
-      width: min(340px, 90vw);
-      display: flex;
-      justify-content: flex-end;
-      align-self: stretch;
+      width: min(360px, 92vw);
+      display: flex; justify-content: space-between; align-items: center;
+    }
+    .page-counter {
+      font-family: 'Caveat', cursive; font-size: 14px;
+      color: rgba(232,201,154,0.45); letter-spacing: 1px;
     }
     .btn-next {
-      background: linear-gradient(135deg, #ff6b9d, #c77dff);
-      color: white; border: none; border-radius: 50px;
-      padding: 13px 30px; font-family: 'Nunito', sans-serif;
-      font-weight: 800; font-size: 15px;
+      background: linear-gradient(135deg, var(--rose), #8b1a2e);
+      color: #fdf6e3; border: none; border-radius: 50px;
+      padding: 12px 28px; font-family: 'Nunito', sans-serif;
+      font-weight: 800; font-size: 14px; letter-spacing: 0.5px;
       cursor: pointer; display: flex; align-items: center; gap: 8px;
-      box-shadow: 0 6px 24px rgba(255,107,157,0.4);
+      box-shadow: 0 4px 20px rgba(201,64,90,0.4), 0 1px 0 rgba(255,255,255,0.1) inset;
       transition: transform 0.2s, box-shadow 0.2s;
+      -webkit-tap-highlight-color: transparent;
     }
-    .btn-next:hover { transform: scale(1.06) translateY(-2px); box-shadow: 0 10px 32px rgba(255,107,157,0.5); }
+    .btn-next:hover { transform: scale(1.05) translateY(-2px); box-shadow: 0 8px 28px rgba(201,64,90,0.55); }
     .btn-next:active { transform: scale(0.96); }
     .btn-next.hidden { visibility: hidden; }
-    .arrow { font-size: 18px; transition: transform 0.3s; }
-    .btn-next:hover .arrow { transform: translateX(4px); }
+    .arrow { font-size: 16px; transition: transform 0.3s; }
+    .btn-next:hover .arrow { transform: translateX(5px); }
 
-    #confetti { position: fixed; inset: 0; pointer-events: none; z-index: 99; }
-
+    /* ── DISCLAIMER STYLES ── */
     .disclaimer-badge {
       display: inline-block;
-      background: #f9a825; color: #1a0a2e;
-      font-family: 'Nunito', sans-serif;
-      font-size: 10px; font-weight: 800;
-      letter-spacing: 1.5px; text-transform: uppercase;
-      padding: 4px 10px; border-radius: 50px;
-      margin-bottom: 14px;
+      background: linear-gradient(135deg, var(--gold), #a8742e);
+      color: #fff9ef; font-family: 'Nunito', sans-serif;
+      font-size: 9px; font-weight: 800; letter-spacing: 2px;
+      text-transform: uppercase; padding: 5px 12px;
+      border-radius: 50px; margin-bottom: 16px;
+      box-shadow: 0 2px 8px rgba(200,150,62,0.3);
     }
     .mono {
-      font-family: 'Nunito', sans-serif !important;
-      font-size: clamp(13px, 3vw, 15px) !important;
-      line-height: 1.7 !important;
-      color: #3a2a4a !important;
+      font-family: 'Lora', serif !important; font-style: italic;
+      font-size: clamp(12px, 3vw, 14px) !important;
+      line-height: 1.75 !important; color: var(--ink) !important;
     }
-    .mono .clause { display: block; margin-bottom: 8px; padding-left: 14px; position: relative; }
-    .mono .clause::before { content: '§'; position: absolute; left: 0; color: #e91e8c; }
+    .mono .clause {
+      display: block; margin-bottom: 9px;
+      padding-left: 16px; position: relative;
+    }
+    .mono .clause::before {
+      content: '✦'; position: absolute; left: 0;
+      color: var(--rose); font-style: normal; font-size: 10px; top: 3px;
+    }
     .sign-off {
-      font-family: 'Caveat', cursive;
-      font-size: 20px; color: #e91e8c; font-weight: 700;
-      margin-top: 10px; text-align: right;
+      font-family: 'Caveat', cursive; font-size: 22px;
+      color: var(--rose); font-weight: 700;
+      margin-top: 12px; text-align: right;
     }
 
-    .fold {
-      position: absolute; bottom: 0; right: 0;
-      width: 0; height: 0;
-      border-style: solid;
-      border-width: 0 0 28px 28px;
-      border-color: transparent transparent rgba(0,0,0,0.1) transparent;
-      border-radius: 0 0 18px 0;
-      z-index: 5;
-    }
-
-    .envelope-screen {
-      position: fixed; inset: 0; z-index: 200;
-      background: #1a0a2e;
-      display: flex; flex-direction: column; align-items: center; justify-content: center;
-      gap: 18px; cursor: pointer;
-      transition: opacity 0.7s ease, transform 0.7s ease;
-    }
-    .envelope-screen.hide {
-      opacity: 0; transform: scale(1.08); pointer-events: none;
-    }
-    .env-emoji { font-size: 80px; animation: envBob 1.5s ease-in-out infinite; }
-    @keyframes envBob {
-      0%,100%{ transform: translateY(0) scale(1); }
-      50%    { transform: translateY(-12px) scale(1.06); }
-    }
-    .env-title { font-family: 'Caveat', cursive; font-size: 32px; color: white; font-weight: 700; }
-    .env-hint {
-      font-size: 13px; color: rgba(255,255,255,0.4);
-      font-weight: 700; letter-spacing: 1px; text-transform: uppercase;
-      animation: blink 1.5s ease-in-out infinite;
-    }
-    @keyframes blink { 0%,100%{opacity:0.4;} 50%{opacity:1;} }
-
-    .doodle-corner {
-      position: absolute; font-size: 22px;
-      pointer-events: none; z-index: 6;
-      animation: doodleSpin 4s ease-in-out infinite;
-    }
-    @keyframes doodleSpin {
-      0%,100% { transform: rotate(-10deg) scale(1); }
-      50%     { transform: rotate(10deg) scale(1.15); }
-    }
-    .doodle-tl { top: 10px;  left: 52px;  animation-delay: 0s; }
-    .doodle-tr { top: 10px;  right: 10px; animation-delay: 0.4s; }
-    .doodle-bl { bottom: 10px; left: 52px; animation-delay: 0.8s; }
+    /* ── CONFETTI ── */
+    #confetti { position: fixed; inset: 0; pointer-events: none; z-index: 99; }
+    #trailCanvas { position: fixed; inset: 0; pointer-events: none; z-index: 998; }
   </style>
 </head>
 <body>
 
-<div class="stars" id="stars"></div>
 <canvas id="confetti"></canvas>
+<canvas id="trailCanvas"></canvas>
 
+<!-- ── ENVELOPE SCREEN ── -->
 <div class="envelope-screen" id="envScreen" onclick="openEnvelope()">
-  <div class="env-emoji">✉️</div>
+  <div class="env-glow"></div>
+  <div class="env-stamp">💌</div>
   <div class="env-title">a letter, just for you</div>
-  <div class="env-hint">tap to open</div>
+  <div class="env-subtitle">tap anywhere to open</div>
 </div>
 
+<!-- ── PETALS ── -->
+
+<!-- ── STAGE ── -->
 <div class="stage">
-  <div class="page-dots" id="dots"></div>
+
+  <div class="progress-wrap">
+    <div class="prog-line" id="dots"></div>
+    <span class="prog-text" id="progText">1 / 6</span>
+  </div>
 
   <div class="letter-wrap">
 
     <!-- PAGE 1 -->
     <div class="page page-1 active" id="page-0">
-      <div class="holes"><div class="hole"></div><div class="hole"></div><div class="hole"></div></div>
-      <span class="doodle-corner doodle-tl">🌸</span>
-      <span class="doodle-corner doodle-tr">⭐</span>
-      <span class="doodle-corner doodle-bl">🎀</span>
+      <div class="holes"><div class="hole"></div><div class="hole"></div><div class="hole"></div><div class="hole"></div></div>
+      <span class="doodle-corner dc-tl">🌸</span>
+      <span class="doodle-corner dc-tr">⭐</span>
       <div class="page-content">
+        <div class="page-label">page one</div>
         <div class="page-body" id="body-0"></div>
-        </div>
       </div>
       <div class="fold"></div>
     </div>
 
     <!-- PAGE 2 -->
     <div class="page page-2" id="page-1">
-      <div class="holes"><div class="hole"></div><div class="hole"></div><div class="hole"></div></div>
-      <span class="doodle-corner doodle-tl">💕</span>
-      <span class="doodle-corner doodle-tr">🌙</span>
+      <div class="holes"><div class="hole"></div><div class="hole"></div><div class="hole"></div><div class="hole"></div></div>
+      <span class="doodle-corner dc-tl">💕</span>
+      <span class="doodle-corner dc-tr">🎵</span>
       <div class="page-content">
+        <div class="page-label">page two</div>
         <div class="page-body" id="body-1"></div>
-        </div>
       </div>
       <div class="fold"></div>
     </div>
 
     <!-- PAGE 3 -->
     <div class="page page-3" id="page-2">
-      <div class="holes"><div class="hole"></div><div class="hole"></div><div class="hole"></div></div>
-      <span class="doodle-corner doodle-tl">💜</span>
-      <span class="doodle-corner doodle-tr">🦋</span>
+      <div class="holes"><div class="hole"></div><div class="hole"></div><div class="hole"></div><div class="hole"></div></div>
+      <span class="doodle-corner dc-tl">🌙</span>
+      <span class="doodle-corner dc-tr">🦋</span>
       <div class="page-content">
+        <div class="page-label">page three</div>
         <div class="page-body" id="body-2"></div>
-        </div>
       </div>
       <div class="fold"></div>
     </div>
 
     <!-- PAGE 4 -->
     <div class="page page-4" id="page-3">
-      <div class="holes"><div class="hole"></div><div class="hole"></div><div class="hole"></div></div>
-      <span class="doodle-corner doodle-tl">💚</span>
-      <span class="doodle-corner doodle-tr">🌿</span>
+      <div class="holes"><div class="hole"></div><div class="hole"></div><div class="hole"></div><div class="hole"></div></div>
+      <span class="doodle-corner dc-tl">💚</span>
+      <span class="doodle-corner dc-tr">🌿</span>
       <div class="page-content">
+        <div class="page-label">page four</div>
         <div class="page-body" id="body-3"></div>
-        </div>
       </div>
       <div class="fold"></div>
     </div>
 
     <!-- PAGE 5 -->
     <div class="page page-5" id="page-4">
-      <div class="holes"><div class="hole"></div><div class="hole"></div><div class="hole"></div></div>
-      <span class="doodle-corner doodle-tl">💘</span>
-      <span class="doodle-corner doodle-tr">🌹</span>
+      <div class="holes"><div class="hole"></div><div class="hole"></div><div class="hole"></div><div class="hole"></div></div>
+      <span class="doodle-corner dc-tl">💘</span>
+      <span class="doodle-corner dc-tr">🌹</span>
       <div class="page-content">
-        <div class="page-body" id="body-4"></div>
+        <div class="page-label">page five</div>
+        <div class="page-body center-body" id="body-4"></div>
       </div>
       <div class="fold"></div>
     </div>
 
-    <!-- PAGE 6 -->
+    <!-- PAGE 6 — disclaimer -->
     <div class="page page-6" id="page-5">
-      <div class="holes"><div class="hole"></div><div class="hole"></div><div class="hole"></div></div>
-      <span class="doodle-corner doodle-tl">⚠️</span>
-      <span class="doodle-corner doodle-tr">📋</span>
-      <span class="doodle-corner doodle-bl">💛</span>
+      <div class="holes"><div class="hole"></div><div class="hole"></div><div class="hole"></div><div class="hole"></div></div>
+      <span class="doodle-corner dc-tl">⚠️</span>
+      <span class="doodle-corner dc-tr">📋</span>
       <div class="page-content">
+        <div class="page-label">important notice</div>
         <div class="page-body" id="body-5"></div>
       </div>
       <div class="fold"></div>
     </div>
 
-    </div><!-- /letter-wrap -->
+  </div><!-- /letter-wrap -->
 
   <div class="btn-wrap">
+    <span class="page-counter" id="pageCounter">1 of 6</span>
     <button class="btn-next" id="nextBtn" onclick="nextPage()">
-      Next page <span class="arrow">→</span>
+      turn the page <span class="arrow">→</span>
     </button>
   </div>
+
 </div>
 
-<canvas id="trailCanvas" style="position:fixed;inset:0;pointer-events:none;z-index:998;"></canvas>
-
 <script>
-  /* ─── stars ─── */
-  const starContainer = document.getElementById('stars');
-  for (let i = 0; i < 120; i++) {
-    const s = document.createElement('div');
-    s.className = 'star';
-    const size = 1 + Math.random() * 2.5;
-    s.style.cssText = `width:${size}px;height:${size}px;top:${Math.random()*100}%;left:${Math.random()*100}%;animation-duration:${2+Math.random()*4}s;animation-delay:${Math.random()*5}s`;
-    starContainer.appendChild(s);
+  /* ── petals ── */
+  const petalEmojis = ['🌸','🌺','✿','❀','🌷','💮'];
+  for (let i = 0; i < 14; i++) {
+    const p = document.createElement('div');
+    p.className = 'petal';
+    p.textContent = petalEmojis[Math.floor(Math.random() * petalEmojis.length)];
+    p.style.cssText = `left:${Math.random()*100}vw;animation-duration:${12+Math.random()*12}s;animation-delay:${Math.random()*12}s`;
+    document.body.appendChild(p);
   }
 
-  /* ─── floating hearts ─── */
-  for (let i = 0; i < 12; i++) {
-    const h = document.createElement('div');
-    h.className = 'heart-float';
-    h.textContent = '💕';
-    h.style.cssText = `left:${Math.random()*100}vw;animation-duration:${10+Math.random()*10}s;animation-delay:${Math.random()*10}s`;
-    document.body.appendChild(h);
-  }
-
-  /* ─── THE FIX: store content in JS strings, NOT from DOM ─── */
-  /* This way nothing ever gets wiped */
+  /* ── PAGE CONTENT ── */
   const PAGE_CONTENT = {
     0: `<span class="big">Hello, You. 👋</span>
           Yes, I made a whole website.<br>
-          Yes, it's <span class="pink">for you.</span><br><br>
+          Yes, it's <span class="rose">for you.</span><br><br>
           No, I'm not sorry. 😌<br><br>
           Keep reading,<br>
           it gets better.
           <div class="doodle">🌸</div>`,
 
     1: `You know that feeling when a song comes on<br>
-          and it just <span class="pink">fits</span> the moment perfectly? 🎵<br><br>
+          and it just <span class="rose">fits</span> the moment perfectly? 🎵<br><br>
           That's what talking to you feels like.<br>
           Every. Single. Time.<br><br>
           Still not tired of it.<br>
@@ -401,7 +478,7 @@
           <div class="doodle">💜</div>`,
 
     3: `Okay here's the honest part —<br><br>
-          I think about you <span class="pink">way more</span> than I should.<br>
+          I think about you <span class="rose">way more</span> than I should.<br>
           I save things to tell you later.<br>
           I reread our chats.<br>
           <span class="accent">More than once.</span> 🫠<br><br>
@@ -410,25 +487,24 @@
 
     4: `So I just want to know<br>
           one thing —<br><br>
-          <span class="grn" style="font-size:clamp(26px,7vw,34px);display:block;line-height:1.4;">Can I keep you? 🥺</span>
+          <span class="grn" style="font-family:'Lora',serif;font-style:italic;font-size:clamp(24px,7vw,32px);display:block;line-height:1.4;font-weight:600;">Can I keep you? 🥺</span><br>
           Like officially.<br>
-          Like — <span class="pink">mine.</span> 💞<br><br>
-          (you can say yes, it's okay,<br>
-          I won't act too cool about it)
+          Like — <span class="rose">mine.</span> 💞<br><br>
+          <span class="accent">(you can say yes, I won't act too cool about it)</span>
           <div class="doodle">💘</div>`,
 
     5: `<span class="disclaimer-badge">⚠️ Important Notice</span>
           <div class="mono">
             <span class="clause">This letter was written with 100% sincerity and zero chill.</span>
-            <span class="clause">The sender has <strong>NO</strong> server, no database, and clearly no shame either. 😭</span>
+            <span class="clause">The sender has <strong>no</strong> server, no database, and clearly no shame either. 😭</span>
             <span class="clause">Please reply on <strong>WhatsApp / DM / IRL</strong> before he refreshes your chat for the 100th time.</span>
             <span class="clause">Silence will be interpreted as <em>processing time.</em> 🙂</span>
           </div>
           <div class="sign-off">— Him 💛</div>`
-  }
+  };
 
-  /* ─── dots ─── */
-  const TOTAL = 5;
+  /* ── dots & counter ── */
+  const TOTAL = 6;
   let current = 0;
   const dotsEl = document.getElementById('dots');
   for (let i = 0; i < TOTAL; i++) {
@@ -442,17 +518,15 @@
       const d = document.getElementById('dot-' + i);
       d.className = 'dot' + (i === current ? ' active' : i < current ? ' done' : '');
     }
+    document.getElementById('pageCounter').textContent = `${current + 1} of ${TOTAL}`;
   }
 
-  /* ─── typewriter: reads from PAGE_CONTENT, never touches DOM source ─── */
+  /* ── typewriter ── */
   function typewritePage(pageIndex) {
     const body = document.getElementById('body-' + pageIndex);
     if (!body) return;
-
     const fullHTML = PAGE_CONTENT[pageIndex];
     if (!fullHTML) return;
-
-    // Split into tokens: tags vs characters
     const tokens = [];
     let i = 0;
     while (i < fullHTML.length) {
@@ -466,128 +540,97 @@
         i++;
       }
     }
-
     body.innerHTML = '';
     let rendered = '';
     let t = 0;
-
     function type() {
       if (t >= tokens.length) return;
       const token = tokens[t]; t++;
       rendered += token.val;
       body.innerHTML = rendered;
-      // tags instant, chars have delay
-      setTimeout(type, token.type === 'tag' ? 0 : 22);
+      setTimeout(type, token.type === 'tag' ? 0 : 20);
     }
     type();
   }
 
-  /* ─── page navigation ─── */
+  /* ── navigation ── */
   function nextPage() {
     if (current >= TOTAL - 1) return;
     const leaving = document.getElementById('page-' + current);
     leaving.classList.remove('active');
     leaving.classList.add('exit');
     setTimeout(() => leaving.classList.remove('exit'), 600);
-
     current++;
-    const arriving = document.getElementById('page-' + current);
-    arriving.classList.add('active');
+    document.getElementById('page-' + current).classList.add('active');
     updateDots();
     typewritePage(current);
-
-    if (current === TOTAL - 1) {
-      document.getElementById('nextBtn').classList.add('hidden');
-      launchConfetti();
-    }
-    if (current === 3) smallConfetti();
+    if (current === TOTAL - 1) document.getElementById('nextBtn').classList.add('hidden');
   }
 
-  /* ─── typewrite page 1 on load too ─── */
   window.addEventListener('load', () => typewritePage(0));
 
-  /* ─── envelope ─── */
   function openEnvelope() {
     document.getElementById('envScreen').classList.add('hide');
   }
 
-  /* ─── confetti ─── */
+  /* ── confetti (not called) ── */
   const canvas = document.getElementById('confetti');
   const ctx = canvas.getContext('2d');
   let particles = [];
   function spawnParticles(n, colors) {
-    canvas.width = window.innerWidth; canvas.height = window.innerHeight;
-    for (let i = 0; i < n; i++) {
-      particles.push({
-        x: Math.random() * canvas.width, y: -20,
-        w: 6 + Math.random() * 10, h: 4 + Math.random() * 6,
-        color: colors[Math.floor(Math.random() * colors.length)],
-        angle: Math.random() * 360, spin: (Math.random() - 0.5) * 7,
-        vx: (Math.random() - 0.5) * 5, vy: 2 + Math.random() * 4
-      });
-    }
+    canvas.width = innerWidth; canvas.height = innerHeight;
+    for (let i = 0; i < n; i++) particles.push({ x: Math.random()*innerWidth, y:-20, w:6+Math.random()*10, h:4+Math.random()*6, color:colors[Math.floor(Math.random()*colors.length)], angle:Math.random()*360, spin:(Math.random()-.5)*7, vx:(Math.random()-.5)*5, vy:2+Math.random()*4 });
     requestAnimationFrame(drawConfetti);
   }
-  function launchConfetti() { spawnParticles(200, ['#ff6b9d','#ffd93d','#6bcb77','#c77dff','#ffb347','#4cc9f0','#ff85b3']); }
-  function smallConfetti()  { spawnParticles(80,  ['#2e7d32','#a5d6a7','#ffeb3b','#ffffff']); }
   function drawConfetti() {
-    ctx.clearRect(0, 0, canvas.width, canvas.height);
-    particles = particles.filter(p => p.y < canvas.height + 20);
-    particles.forEach(p => {
-      ctx.save(); ctx.translate(p.x, p.y); ctx.rotate(p.angle * Math.PI / 180);
-      ctx.fillStyle = p.color; ctx.globalAlpha = 0.88;
-      ctx.beginPath(); ctx.ellipse(0,0,p.w/2,p.h/2,0,0,2*Math.PI); ctx.fill();
-      ctx.restore();
-      p.x += p.vx; p.y += p.vy; p.angle += p.spin;
-    });
+    ctx.clearRect(0,0,canvas.width,canvas.height);
+    particles = particles.filter(p=>p.y<canvas.height+20);
+    particles.forEach(p=>{ ctx.save(); ctx.translate(p.x,p.y); ctx.rotate(p.angle*Math.PI/180); ctx.fillStyle=p.color; ctx.globalAlpha=0.88; ctx.beginPath(); ctx.ellipse(0,0,p.w/2,p.h/2,0,0,2*Math.PI); ctx.fill(); ctx.restore(); p.x+=p.vx; p.y+=p.vy; p.angle+=p.spin; });
     if (particles.length) requestAnimationFrame(drawConfetti);
-    else ctx.clearRect(0, 0, canvas.width, canvas.height);
   }
 
-  /* ─── cursor trail ─── */
+  /* ── cursor trail ── */
   const tc = document.getElementById('trailCanvas');
   const tx = tc.getContext('2d');
-  tc.width = window.innerWidth; tc.height = window.innerHeight;
-  window.addEventListener('resize', () => { tc.width = window.innerWidth; tc.height = window.innerHeight; });
+  tc.width = innerWidth; tc.height = innerHeight;
+  window.addEventListener('resize', () => { tc.width = innerWidth; tc.height = innerHeight; });
   let trail = [];
+  const trailPetals = ['🌸','💕','✨','💖','🌺'];
   function addTrail(x, y) {
-    trail.push({ x, y, life: 1, size: 14 + Math.random() * 10 });
-    if (trail.length > 18) trail.shift();
+    trail.push({ x, y, life: 1, size: 12+Math.random()*10, emoji: trailPetals[Math.floor(Math.random()*trailPetals.length)] });
+    if (trail.length > 16) trail.shift();
   }
   document.addEventListener('mousemove', e => addTrail(e.clientX, e.clientY));
-  document.addEventListener('touchmove', e => addTrail(e.touches[0].clientX, e.touches[0].clientY), { passive: true });
+  document.addEventListener('touchmove', e => addTrail(e.touches[0].clientX, e.touches[0].clientY), {passive:true});
   function drawTrail() {
-    tx.clearRect(0, 0, tc.width, tc.height);
+    tx.clearRect(0,0,tc.width,tc.height);
     trail.forEach(p => {
-      tx.globalAlpha = p.life * 0.8;
+      tx.globalAlpha = p.life * 0.75;
       tx.font = `${p.size}px serif`;
-      tx.fillText('💖', p.x - p.size / 2, p.y + p.size / 2);
-      p.life -= 0.06;
+      tx.fillText(p.emoji, p.x-p.size/2, p.y+p.size/2);
+      p.life -= 0.055;
     });
     trail = trail.filter(p => p.life > 0);
     requestAnimationFrame(drawTrail);
   }
   drawTrail();
 
-  /* ─── emoji burst on click ─── */
+  /* ── emoji burst ── */
   const burstEmojis = ['💖'];
   document.addEventListener('click', e => {
     if (e.target.closest('#nextBtn') || e.target.closest('#envScreen')) return;
     for (let i = 0; i < 10; i++) {
       const el = document.createElement('div');
-      const angle = (Math.PI * 2 / 10) * i;
-      const dist = 55 + Math.random() * 55;
-      const dx = Math.cos(angle) * dist;
-      const dy = Math.sin(angle) * dist;
-      const size = 16 + Math.random() * 16;
-      el.textContent = burstEmojis[Math.floor(Math.random() * burstEmojis.length)];
-      el.style.cssText = `position:fixed;left:${e.clientX}px;top:${e.clientY}px;font-size:${size}px;pointer-events:none;z-index:997;transition:transform 0.6s ease-out,opacity 0.6s ease-out;transform:translate(-50%,-50%);`;
+      const angle = (Math.PI*2/10)*i;
+      const dist = 50+Math.random()*60;
+      el.textContent = burstEmojis[Math.floor(Math.random()*burstEmojis.length)];
+      el.style.cssText = `position:fixed;left:${e.clientX}px;top:${e.clientY}px;font-size:${16+Math.random()*14}px;pointer-events:none;z-index:997;transition:transform 0.65s ease-out,opacity 0.65s ease-out;transform:translate(-50%,-50%);`;
       document.body.appendChild(el);
       requestAnimationFrame(() => {
-        el.style.transform = `translate(calc(-50% + ${dx}px), calc(-50% + ${dy}px))`;
+        el.style.transform = `translate(calc(-50% + ${Math.cos(angle)*dist}px), calc(-50% + ${Math.sin(angle)*dist}px))`;
         el.style.opacity = '0';
       });
-      setTimeout(() => el.remove(), 650);
+      setTimeout(() => el.remove(), 700);
     }
   });
 </script>
