@@ -15,6 +15,8 @@
       display: flex; align-items: center; justify-content: center;
       overflow: hidden;
       position: relative;
+      user-select: none;
+      -webkit-user-select: none;
     }
 
     .stars { position: fixed; inset: 0; pointer-events: none; z-index: 0; }
@@ -94,6 +96,7 @@
     .page-3 { background: linear-gradient(145deg, #ede7f6, #d1c4e9); }
     .page-4 { background: linear-gradient(145deg, #e8f5e9, #c8e6c9); }
     .page-5 { background: linear-gradient(145deg, #fff9c4, #fff176); }
+    .page-6 { background: linear-gradient(145deg, #fce4ec, #ffccbc); }
 
     .page::after {
       content: '';
@@ -137,14 +140,6 @@
       line-height: 1.85;
       color: #3a2a4a;
     }
-    #body-2, #body-3, #body-4,#body-5 {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      text-align: center;
-    }
-    #page-5 { background: linear-gradient(145deg, #fce4ec, #ffccbc); }
     .page-body .big   { font-size: clamp(26px,7vw,34px); font-weight: 700; display: block; margin-bottom: 12px; }
     .page-body .pink  { color: #e91e8c; font-weight: 700; }
     .page-body .pur   { color: #7b2ff7; font-weight: 700; }
@@ -259,8 +254,8 @@
 
 <div class="envelope-screen" id="envScreen" onclick="openEnvelope()">
   <div class="env-emoji">✉️</div>
-  <div class="env-title">oru small kaditham for you</div>
-  <div class="env-hint">tap to pakka</div>
+  <div class="env-title">a letter, just for you</div>
+  <div class="env-hint">tap to open</div>
 </div>
 
 <div class="stage">
@@ -273,17 +268,9 @@
       <div class="holes"><div class="hole"></div><div class="hole"></div><div class="hole"></div></div>
       <span class="doodle-corner doodle-tl">🌸</span>
       <span class="doodle-corner doodle-tr">⭐</span>
+      <span class="doodle-corner doodle-bl">🎀</span>
       <div class="page-content">
-        <div class="page-body" id="body-0">
-          <span class="big">Hello, Madam. 👋</span>
-          ungaluku manasatchi iruka<br>
-          oruthaa <span class="pink">ungalukaga </span> okanthu ready pannirukane<br><br>
-          pavam, nalla iruku illa nalla illanu<br>
-          oru reply podalame<br>
-          apdinla illama ghost panringa<br>
-          ithula thirumba revisit vera panringa<br><br>
-          innum iruku next page ponga
-          <div class="doodle">🌸</div>
+        <div class="page-body" id="body-0"></div>
         </div>
       </div>
       <div class="fold"></div>
@@ -295,15 +282,7 @@
       <span class="doodle-corner doodle-tl">💕</span>
       <span class="doodle-corner doodle-tr">🌙</span>
       <div class="page-content">
-        <div class="page-body" id="body-1">
-          thirumba itha pakanumna<br>
-          avankita poi crcta oru bathila sollunga<br>
-          <span class="pink">yes or no</span><br>
-          illa <span class="pink">poda dei olunga odi poiru</span><br><br>
-          then na itha palaya maari mathaa vaipiruku<br>
-          atha vitutu<span class="accent"> thirumba ghost panna</span><br>
-          avlothaan<br>
-          <div class="doodle">✨</div>
+        <div class="page-body" id="body-1"></div>
         </div>
       </div>
       <div class="fold"></div>
@@ -315,10 +294,7 @@
       <span class="doodle-corner doodle-tl">💜</span>
       <span class="doodle-corner doodle-tr">🦋</span>
       <div class="page-content">
-        <div class="page-body" id="body-2">
-          <br><br><br>
-          innu nee pogama okanthu next kuduthutu iruka
-          <div class="doodle">💜</div>
+        <div class="page-body" id="body-2"></div>
         </div>
       </div>
       <div class="fold"></div>
@@ -330,28 +306,22 @@
       <span class="doodle-corner doodle-tl">💚</span>
       <span class="doodle-corner doodle-tr">🌿</span>
       <div class="page-content">
-        <div class="page-body" id="body-3">
-          <br><br><br>
-          Aii pooi reply pannu ippave<br>
-          avan romba paavam 😖
-          <div class="doodle">🌿</div>
+        <div class="page-body" id="body-3"></div>
         </div>
       </div>
+      <div class="fold"></div>
     </div>
+
+    <!-- PAGE 5 -->
     <div class="page page-5" id="page-4">
       <div class="holes"><div class="hole"></div><div class="hole"></div><div class="hole"></div></div>
-      <span class="doodle-corner doodle-tl">💚</span>
-      <span class="doodle-corner doodle-tr">🌿</span>
+      <span class="doodle-corner doodle-tl">💘</span>
+      <span class="doodle-corner doodle-tr">🌹</span>
       <div class="page-content">
-        <div class="page-body" id="body-3">
-          <br><br><br>
-          Aii pooi reply pannu ippave<br>
-          avan romba paavam 😖
-          <div class="doodle">🌿</div>
-        </div>
+        <div class="page-body" id="body-4"></div>
       </div>
+      <div class="fold"></div>
     </div>
-    
 
     <!-- PAGE 6 -->
     <div class="page page-6" id="page-5">
@@ -360,17 +330,12 @@
       <span class="doodle-corner doodle-tr">📋</span>
       <span class="doodle-corner doodle-bl">💛</span>
       <div class="page-content">
-        <div class="page-body" id="body-4">
-          <span class="disclaimer-badge">⚠️ Oru mukiya thagaval!</span>
-          <div class="mono">
-            <span class="clause">Inga ethuvum illa</span>
-          </div>
-          <div class="sign-off">— naanthaan 💛</div>
-        </div>
+        <div class="page-body" id="body-5"></div>
       </div>
+      <div class="fold"></div>
     </div>
 
-  </div><!-- /letter-wrap -->
+    </div><!-- /letter-wrap -->
 
   <div class="btn-wrap">
     <button class="btn-next" id="nextBtn" onclick="nextPage()">
@@ -404,7 +369,6 @@
   /* ─── THE FIX: store content in JS strings, NOT from DOM ─── */
   /* This way nothing ever gets wiped */
   const PAGE_CONTENT = {
-    const PAGE_CONTENT = {
     0: `<span class="big">Hello, You. 👋</span>
           Yes, I made a whole website.<br>
           Yes, it's <span class="pink">for you.</span><br><br>
@@ -451,14 +415,14 @@
           <div class="mono">
             <span class="clause">This letter was written with 100% sincerity and zero chill.</span>
             <span class="clause">The sender has <strong>NO</strong> server, no database, and clearly no shame either. 😭</span>
-            <span class="clause">Please reply on <strong>Call / DM</strong> before he refreshes your chat for the 100th time.</span>
+            <span class="clause">Please reply on <strong>WhatsApp / DM / IRL</strong> before he refreshes your chat for the 100th time.</span>
             <span class="clause">Silence will be interpreted as <em>processing time.</em> 🙂</span>
           </div>
-          <div class="sign-off">— Bala 💛</div>`
-  };
+          <div class="sign-off">— Him 💛</div>`
+  }
 
   /* ─── dots ─── */
-  const TOTAL = 6;
+  const TOTAL = 5;
   let current = 0;
   const dotsEl = document.getElementById('dots');
   for (let i = 0; i < TOTAL; i++) {
@@ -528,7 +492,9 @@
 
     if (current === TOTAL - 1) {
       document.getElementById('nextBtn').classList.add('hidden');
+      launchConfetti();
     }
+    if (current === 3) smallConfetti();
   }
 
   /* ─── typewrite page 1 on load too ─── */
