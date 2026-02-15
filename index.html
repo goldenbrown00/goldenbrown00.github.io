@@ -442,7 +442,7 @@
 
 <script>
   /* ── petals ── */
-  const petalEmojis = ['🌸','🌺','✿','❀','🌷','💮'];
+  const petalEmojis = ['🩷'];
   for (let i = 0; i < 14; i++) {
     const p = document.createElement('div');
     p.className = 'petal';
@@ -453,10 +453,10 @@
 
   /* ── PAGE CONTENT ── */
   const PAGE_CONTENT = {
-    0: `<span class="big">Hello, Ishwarya. 👋</span>
+    0: `<span class="big">Hello, Kural azhagi. 👋</span>
           Yes, I made a whole website.<br>
           Yes, it's <span class="rose">for you.</span><br><br>
-          No, I'm not sorry. 😌<br><br>
+          just, only for you 😌<br><br>
           Keep reading,<br>
           it gets better.
           <div class="doodle">🌸</div>`,
@@ -597,7 +597,7 @@
   tc.width = innerWidth; tc.height = innerHeight;
   window.addEventListener('resize', () => { tc.width = innerWidth; tc.height = innerHeight; });
   let trail = [];
-  const trailPetals = ['💕','💖'];
+  const trailPetals = [''];
   function addTrail(x, y) {
     trail.push({ x, y, life: 1, size: 12+Math.random()*10, emoji: trailPetals[Math.floor(Math.random()*trailPetals.length)] });
     if (trail.length > 16) trail.shift();
