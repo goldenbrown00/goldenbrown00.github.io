@@ -597,7 +597,7 @@
   tc.width = innerWidth; tc.height = innerHeight;
   window.addEventListener('resize', () => { tc.width = innerWidth; tc.height = innerHeight; });
   let trail = [];
-  const trailPetals = [''];
+  const trailPetals = ['💋','😘'];
   function addTrail(x, y) {
     trail.push({ x, y, life: 1, size: 12+Math.random()*10, emoji: trailPetals[Math.floor(Math.random()*trailPetals.length)] });
     if (trail.length > 16) trail.shift();
